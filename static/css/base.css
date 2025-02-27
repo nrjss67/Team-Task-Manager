@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.layout-container {
+    padding-top: 70px;
+    min-height: 100vh;
+    display: flex;
+}
+
+.sidebar-wrapper {
+    width: 250px;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
+}
+
+.content-wrapper {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    min-height: calc(100vh - 70px);
+}
+
+@media (max-width: 768px) {
+    .content-wrapper {
+        margin-left: 0;
+    }
+}

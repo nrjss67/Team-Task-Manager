@@ -1,0 +1,44 @@
+.badge {
+    padding: 0.5em 1em;
+    font-weight: 500;
+    display: inline-block;
+    border-radius: 4px;
+}
+
+.status-completed {
+    background-color: #28a745;  /* зелений */
+    color: white;
+}
+
+.status-pending {
+    background-color: #ffc107;  /* жовтий */
+    color: #212529;
+}
+
+.bg-high {
+    background-color: #dc3545;
+}
+.bg-medium {
+    background-color: #ffc107;
+}
+.bg-low {
+    background-color: #28a745;
+}
+.bg-todo {
+    background-color: #6c757d;
+}
+.bg-in_progress {
+    background-color: #17a2b8;
+}
+.bg-done {
+    background-color: #28a745;
+}
+.comment {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+.comment:last-child {
+    border-bottom: none;
+}
+
+

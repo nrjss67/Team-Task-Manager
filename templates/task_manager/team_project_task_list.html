@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}{{ project.name }} - Tasks{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/pages/project_task_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="project-tasks-container">
+    <div class="project-header card mb-4">
+        <div class="card-header bg-white py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <h1 class="h4 mb-0 me-3">{{ project.name }}</h1>
+                    <a href="{% url 'task_manager:team_project_update' team_name project.id %}" 
+                       class="btn btn-outline-purple btn-sm">
+                        <i class="bi bi-pencil"></i> Edit Project
+                    </a>
+                </div>
+                <a href="{% url 'task_manager:team_project_task_create' team_name project.id %}" 
+                   class="btn btn-outline-purple">
+                    <i class="bi bi-plus-lg"></i> New Task
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+                <div class="project-info">
+
+                    <p class="project-description mb-4">{{ project.description }}</p>
+                    
+                    <div class="project-meta d-flex gap-4">
+                        <div class="meta-item">
+                            <i class="bi bi-calendar3"></i>
+                            <span>Deadline {{ project.end_date|date:"M d, Y" }}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="bi bi-list-task"></i>
+                            <span>{{ tasks.count }} Tasks</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="bi bi-people"></i>
+                            <span>{{ project.team.members.count }} Members</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="progress-section mt-4 pt-4 border-top">              
+                <div class="task-stats mt-4">
+                    <div class="stat-card">
+                        <div class="stat-icon completed">
+                            <i class="bi bi-check2-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value">{{ completed_tasks }}</span>
+                            <span class="stat-label">Completed</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon pending">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value">{{ not_completed_tasks }}</span>
+                            <span class="stat-label">In Progress</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon high-priority">
+                            <i class="bi bi-exclamation-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value">{{ high_priority_tasks }}</span>
+                            <span class="stat-label">High Priority</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="filters-section card mb-4">
+        <div class="card-body">
+            <div class="d-flex gap-3 justify-content-between">
+                <form method="get" class="search-form">
+                    <div class="search-box">
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-end-0">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" 
+                                   name="search" 
+                                   class="form-control border-start-0" 
+                                   placeholder="Search tasks..."
+                                   value="{{ request.GET.search|default:'' }}">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-search me-2"></i>Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <form method="get" class="filters-form d-flex gap-3 align-items-center">
+                    <div class="filter-box">
+                        <select name="status" class="form-select">
+                            <option value="all" {% if request.GET.status == 'all' or not request.GET.status %}selected{% endif %}>All Status</option>
+                            <option value="completed" {% if request.GET.status == 'completed' %}selected{% endif %}>Completed</option>
+                            <option value="pending" {% if request.GET.status == 'pending' %}selected{% endif %}>In Progress</option>
+                        </select>
+                    </div>
+                    <div class="filter-box">
+                        <select name="priority" class="form-select">
+                            <option value="all" {% if request.GET.priority == 'all' or not request.GET.priority %}selected{% endif %}>All Priority</option>
+                            <option value="high" {% if request.GET.priority == 'high' %}selected{% endif %}>High Priority</option>
+                            <option value="medium" {% if request.GET.priority == 'medium' %}selected{% endif %}>Medium Priority</option>
+                            <option value="low" {% if request.GET.priority == 'low' %}selected{% endif %}>Low Priority</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-funnel me-2"></i>Filter
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="tasks-list card">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Task Name</th>
+                        <th>Assigned To</th>
+                        <th>Due Date</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th style="width: 100px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'task_manager:team_project_task_detail' team_name project.pk task.pk %}" 
+                               class="task-name">{{ task.name }}</a>
+                            {% if task.description %}
+                            <div class="task-description">{{ task.description|truncatechars:100 }}</div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="assigned-to">
+                                {% for worker in task.assignees.all %}
+                                    {% if worker.profile_image %}
+                                        <img src="{{ task.assigned_to.profile_image.url }}" 
+                                            alt="{{ task.assigned_to.username }}" 
+                                            class="avatar">
+                                    {% else %}
+                                        <div class="avatar">{{ worker.username|first|upper }}</div>
+                                    {% endif %}
+                                    <span>{{ worker.username }}</span>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="due-date {% if task.is_overdue %}overdue{% endif %}">
+                                <i class="bi bi-calendar3"></i>
+                                <span>{{ task.deadline|date:"M d, Y" }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            {% if task.priority == 'high' %}
+                                <span class="badge priority-high">High</span>
+                            {% elif task.priority == 'medium' %}
+                                <span class="badge priority-medium">Medium</span>
+                            {% else %}
+                                <span class="badge priority-low">Low</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if task.is_complited %}
+                                <span class="badge status-completed">Completed</span>
+                            {% else %}
+                                <span class="badge status-pending">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'task_manager:team_project_task_update' team_name project.pk task.pk %}" class="btn btn-sm btn-light" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'task_manager:team_project_task_delete' team_name project.pk task.pk %}" class="btn btn-sm btn-light" title="Delete">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <i class="bi bi-list-task"></i>
+                                <h3>No tasks found</h3>
+                                <p>Create your first task to get started</p>
+                                <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#createTaskModal">
+                                    <i class="bi bi-plus-lg me-2"></i>Add Task
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% if page_obj.has_other_pages %}
+        {% include "includes/pagination.html" %}
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/pages/project_task_list.js' %}"></script>
+{% endblock %}

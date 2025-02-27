@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sign Up{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/pages/sign-up.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="card shadow-lg p-4">
+            <h2 class="mb-4 text-center">Sign Up</h2>
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label class="form-label">{{ form.username.label }}</label>
+                    {{ form.username }}
+                    <div class="form-text">Choose a unique username.</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">{{ form.email.label }}</label>
+                    {{ form.email }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">{{ form.first_name.label }}</label>
+                    {{ form.first_name }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">{{ form.last_name.label }}</label>
+                    {{ form.last_name }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">{{ form.team_name.label }}</label>
+                    {{ form.team_name }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">{{ form.position_name.label }}</label>
+                    {{ form.position_name }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">{{ form.password1.label }}</label>
+                    {{ form.password1 }}
+                    <div class="form-text">{{ form.password1.help_text }}</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">{{ form.password2.label }}</label>
+                    {{ form.password2 }}
+                    <div class="form-text">{{ form.password2.help_text }}</div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

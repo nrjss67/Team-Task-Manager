@@ -1,0 +1,67 @@
+:root {
+    --purple-primary: #6f42c1;
+    --purple-hover: #5a32a3;
+    --purple-focus: rgba(111, 66, 193, 0.25);
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+/* Стилі для кнопок */
+.btn-outline-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #bb2d3b;
+    border-color: #b02a37;
+}
+
+/* Стилі для посилань */
+a {
+    color: var(--purple-primary);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--purple-hover);
+}
+
+/* Стилі для сповіщень */
+.alert-warning {
+    color: #664d03;
+    background-color: #fff3cd;
+    border-color: #ffecb5;
+}
+
+/* Анімація для кнопки видалення */
+.btn-danger {
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-danger:hover {
+    transform: scale(1.05);
+}

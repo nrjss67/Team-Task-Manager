@@ -1,0 +1,51 @@
+:root {
+    --purple-primary: #7B68EE;
+    --purple-hover: #7B68EE;
+    --purple-focus: rgba(111, 66, 193, 0.25);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--purple-primary);
+    box-shadow: 0 0 0 0.25rem var(--purple-focus);
+}
+
+.btn-primary {
+    background-color: var(--purple-primary);
+    border-color: var(--purple-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--purple-hover);
+    border-color: var(--purple-hover);
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.form-check-input:checked {
+    background-color: var(--purple-primary);
+    border-color: var(--purple-primary);
+}
+
+/* Фіолетовий колір для посилань */
+a {
+    color: var(--purple-primary);
+}
+
+a:hover {
+    color: var(--purple-hover);
+}

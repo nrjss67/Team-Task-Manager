@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/pages/message_detail.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card mb-3">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center py-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="rounded-circle bg-purple text-white d-flex align-items-center justify-content-center" 
+                             style="width: 32px; height: 32px; font-size: 14px;">
+                            {{ message.from_worker.username|first|upper }}
+                        </div>
+                        <div>
+                            <div class="fw-medium">{{ message.from_worker.username }}</div>
+                            <div class="text-muted small">{{ message.send_datetime|date:"F j, Y, g:i a" }}</div>
+                        </div>
+                    </div>
+                    <a href="{% url 'task_manager:inbox' team_name %}" class="btn btn-sm btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h5 class="mb-3">{{ message.title }}</h5>
+                    <div class="message-content">
+                        {{ message.content|linebreaks }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Форма відповіді -->
+            <div class="card reply-card">
+                <div class="card-body p-3">
+                    <form method="post" class="compact-form">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.title.id_for_label }}" class="form-label small fw-medium">
+                                Subject
+                            </label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                                <div class="invalid-feedback d-block small">
+                                    {{ form.title.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.content.id_for_label }}" class="form-label small fw-medium">
+                                Message
+                            </label>
+                            {{ form.content }}
+                            {% if form.content.errors %}
+                                <div class="invalid-feedback d-block small">
+                                    {{ form.content.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="text-muted small">
+                                <i class="bi bi-info-circle"></i> 
+                                Press Ctrl+Enter to send
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-sm btn-light" id="cancelReply">
+                                    Cancel
+                                </button>
+                                <button type="submit" class="btn btn-sm btn-purple">
+                                    <i class="bi bi-send"></i> Send
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block js %}
+    <script src="{% static 'js/pages/message_detail.js' %}"></script>
+{% endblock %}

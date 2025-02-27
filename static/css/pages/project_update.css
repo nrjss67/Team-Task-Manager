@@ -1,0 +1,98 @@
+:root {
+    --purple-primary: #6f42c1;
+    --purple-hover: #5a32a3;
+    --purple-focus: rgba(111, 66, 193, 0.25);
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+/* Стилі для форми */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--purple-primary);
+    box-shadow: 0 0 0 0.25rem var(--purple-focus);
+}
+
+/* Стилі для кнопок */
+.btn-purple {
+    color: #fff;
+    background-color: var(--purple-primary);
+    border-color: var(--purple-primary);
+}
+
+.btn-purple:hover {
+    color: #fff;
+    background-color: var(--purple-hover);
+    border-color: var(--purple-hover);
+    transform: translateY(-1px);
+}
+
+.btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-outline-danger:hover {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-outline-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+/* Стилі для посилань */
+a {
+    color: var(--purple-primary);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--purple-hover);
+}
+
+/* Анімації */
+.btn {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Адаптивні стилі */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .d-flex.justify-content-between {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .btn-outline-danger {
+        width: 100%;
+    }
+}

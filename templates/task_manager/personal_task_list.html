@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}Personal Task List{% endblock %}
+
+{% block content %}
+<div class="task-list-container">
+    <div class="page-header mb-4">
+        <h2>Welcome back, {{ user.username }}!</h2>
+        <p class="text-muted">Manage and track your personal tasks</p>
+    </div>
+
+    <div class="d-flex gap-4">
+        <div class="flex-grow-1">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body p-3">
+                    <form method="get" action="" class="d-flex gap-2">
+                        <div class="flex-grow-1">
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent border-end-0">
+                                    <i class="bi bi-search"></i>
+                                </span>
+                                <input type="text" 
+                                       name="search" 
+                                       class="form-control border-start-0 ps-0" 
+                                       placeholder="Search tasks..."
+                                       value="{{ request.GET.search }}">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary px-4">Search</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th class="border-0">Task Name</th>
+                                <th class="border-0">Deadline</th>
+                                <th class="border-0">Status</th>
+                                <th class="border-0">Type</th>
+                                <th class="border-0">Priority</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in tasks %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'task_manager:team_project_task_detail' team_name task.project.pk task.pk %}" 
+                                       class="task-link">
+                                        {{ task.name }}
+                                    </a>
+                                </td>
+                                <td>{{ task.deadline }}</td>
+                                <td>
+                                    {% if task.is_complited %}
+                                        <span class="badge status-completed">Completed</span>
+                                    {% else %}
+                                        <span class="badge status-pending">Pending</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="task-type">{{ task.task_type }}</span>
+                                </td>
+                                <td>
+                                    {% if task.priority == "high" %}
+                                        <span class="badge priority-high">{{ task.get_priority_display }}</span>
+                                    {% elif task.priority == "medium" %}
+                                        <span class="badge priority-medium">{{ task.get_priority_display }}</span>
+                                    {% else %}
+                                        <span class="badge priority-low">{{ task.get_priority_display }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {% if page_obj.has_other_pages %}
+                {% include "includes/pagination.html" %}
+            {% endif %}
+        </div>
+
+        <div class="filter-panel card shadow-sm" style="width: 280px; height: fit-content;">
+            <div class="card-body">
+                <h5 class="card-title mb-4">
+                    <i class="bi bi-funnel me-2"></i>Filters
+                </h5>
+                <form method="get" action="">
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Status</label>
+                        <select name="status" class="form-select">
+                            <option value="all" {% if status == "all" %}selected{% endif %}>All Tasks</option>
+                            <option value="completed" {% if status == "completed" %}selected{% endif %}>Completed</option>
+                            <option value="not_completed" {% if status == "pending" %}selected{% endif %}>Pending</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-muted">Priority</label>
+                        <select name="priority" class="form-select">
+                            <option value="all" {% if priority == "all" %}selected{% endif %}>All Priorities</option>
+                            <option value="high" {% if priority == "high" %}selected{% endif %}>High</option>
+                            <option value="medium" {% if priority == "medium" %}selected{% endif %}>Medium</option>
+                            <option value="low" {% if priority == "low" %}selected{% endif %}>Low</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-check2 me-2"></i>Apply Filters
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .task-list-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .page-header h2 {
+        font-weight: 600;
+        color: #2D3748;
+        margin-bottom: 0.5rem;
+    }
+
+    .card {
+        border: none;
+        border-radius: 12px;
+        background: white;
+    }
+
+    .table th {
+        font-weight: 600;
+        color: #4A5568;
+        background-color: #F8F9FA;
+        padding: 1rem;
+    }
+
+    .table td {
+        padding: 1rem;
+        vertical-align: middle;
+    }
+
+    .task-link {
+        color: #7B68EE;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .task-link:hover {
+        color: #6A5AE0;
+    }
+
+    .badge {
+        padding: 0.5rem 0.8rem;
+        font-weight: 500;
+        border-radius: 6px;
+    }
+
+    .status-completed {
+        background-color: #DEF7EC;
+        color: #03543F;
+    }
+
+    .status-pending {
+        background-color: #FEF3C7;
+        color: #92400E;
+    }
+
+    .priority-high {
+        background-color: #FEE2E2;
+        color: #991B1B;
+    }
+
+    .priority-medium {
+        background-color: #FEF3C7;
+        color: #92400E;
+    }
+
+    .priority-low {
+        background-color: #DBEAFE;
+        color: #1E40AF;
+    }
+
+    .task-type {
+        color: #4A5568;
+        font-size: 0.9rem;
+    }
+
+    .form-select {
+        border-radius: 8px;
+        border-color: #E2E8F0;
+    }
+
+    .form-select:focus {
+        border-color: #7B68EE;
+        box-shadow: 0 0 0 3px rgba(123, 104, 238, 0.1);
+    }
+
+    .input-group-text {
+        border-color: #E2E8F0;
+    }
+
+    .form-control {
+        border-color: #E2E8F0;
+    }
+
+    .form-control:focus {
+        border-color: #7B68EE;
+        box-shadow: 0 0 0 3px rgba(123, 104, 238, 0.1);
+    }
+
+    @media (max-width: 768px) {
+        .d-flex.gap-4 {
+            flex-direction: column;
+        }
+
+        .filter-panel {
+            width: 100% !important;
+            margin-top: 1rem;
+        }
+    }
+</style>
+{% endblock %}

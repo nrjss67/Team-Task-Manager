@@ -1,0 +1,41 @@
+body {
+    overflow: hidden;
+}
+
+.auth-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 60px);
+    margin-top: 60px;
+    overflow-y: auto;
+}
+
+.auth-container {
+    min-height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.auth-container .card {
+    max-width: 500px;
+    width: 100%;
+    margin: 2rem 0;
+}
+
+.auth-page + .main-content,
+.auth-page .main-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+
+@media (max-height: 800px) {
+    .auth-container {
+        padding: 3rem 2rem;
+    }
+}

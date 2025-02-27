@@ -1,0 +1,135 @@
+.main-header {
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    height: 70px;
+    padding: 0;
+}
+
+.header-logo {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-right: 16px;
+}
+
+.brand-divider {
+    width: 1px;
+    height: 24px;
+    background-color: #E5E7EB;
+    margin: 0 16px;
+}
+
+.project-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #7B68EE;
+    letter-spacing: -0.5px;
+}
+
+.nav-link {
+    color: #2D3748;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.nav-link:hover {
+    background-color: #F7F7F9;
+    color: #7B68EE;
+}
+
+.dropdown-menu {
+    border: none;
+    border-radius: 12px;
+    margin-top: 10px;
+    min-width: 200px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+    padding: 10px 16px;
+    color: #2D3748;
+    transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #F7F7F9;
+    color: #7B68EE;
+}
+
+.dropdown-item.text-danger:hover {
+    background-color: #FEE2E2;
+    color: #DC2626;
+}
+
+.dropdown-item-form {
+    padding: 0;
+}
+
+.dropdown-item-form button {
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: none;
+}
+
+.btn-outline-primary {
+    border-color: #7B68EE;
+    color: #7B68EE;
+}
+
+.btn-outline-primary:hover {
+    background-color: #7B68EE;
+    border-color: #7B68EE;
+    color: white;
+}
+
+.btn-primary {
+    background-color: #7B68EE;
+    border-color: #7B68EE;
+}
+
+.btn-primary:hover {
+    background-color: #6A5AE0;
+    border-color: #6A5AE0;
+}
+
+.btn-outline-secondary {
+    border-color: #E5E7EB;
+    color: #2D3748;
+    background-color: transparent;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #F7F7F9;
+    border-color: #E5E7EB;
+    color: #7B68EE;
+}
+
+@media (max-width: 768px) {
+    .brand-divider,
+    .project-name {
+        display: none;
+    }
+
+    .btn i {
+        margin-right: 0 !important;
+    }
+    
+    .btn span {
+        display: none;
+    }
+
+    .dropdown-toggle::after {
+        display: none;
+    }
+}
