@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Inbox{% endblock %}
+
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/pages/inbox.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card">
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-4">
+                            <h1 class="h4 mb-0">Messages</h1>
+                            <form method="get" action="{% url 'task_manager:inbox' team_name %}" class="search-form mb-0">
+                                <div class="input-group">
+                                    <input type="search" 
+                                           name="search" 
+                                           class="form-control" 
+                                           placeholder="Search messages..."
+                                           value="{{ request.GET.search|default:'' }}">
+                                    <button class="btn btn-purple" type="submit">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <a href="{% url 'task_manager:message_create' team_name %}" class="btn btn-purple">
+                            <i class="bi bi-plus-lg"></i> New Message
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card-body p-0">
+                    <div class="message-toolbar border-bottom p-3">
+                        <div class="d-flex align-items-center">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-light" id="selectAll">
+                                    <input type="checkbox" class="form-check-input me-2" id="selectAllCheckbox">
+                                    Select All
+                                </button>
+                                <button type="button" class="btn btn-light" id="archiveSelected" disabled>
+                                    <i class="bi bi-archive"></i> Archive
+                                </button>
+                                <button type="button" class="btn btn-light" id="deleteSelected" disabled>
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="inbox-content">
+                        <div class="inbox-filters card mb-4">
+                            <div class="card-body d-flex align-items-center">
+                                <div class="filters-left">
+                                    <a href="?status=all" class="btn btn-sm btn-light active me-2">All</a>
+                                    <a href="?status=readed" class="btn btn-sm btn-light me-2">Readed</a>
+                                    <a href="?status=unread" class="btn btn-sm btn-light me-2">Unread</a>
+                                </div>
+                                <div class="filters-right ms-auto">
+                                    <form id="bulkActionsForm" method="post">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="messages-list card">
+                            {% for message in messages %}
+                            <div class="message-item {% if not message.is_read %}unread{% endif %}" 
+                                 onclick="window.location='{% url 'task_manager:message_detail' team_name message.id %}'"
+                                 style="cursor: pointer;">
+                                <div class="message-checkbox" onclick="event.stopPropagation()">
+                                    <input type="checkbox" name="message_ids[]" value="{{ message.id }}" class="form-check-input message-checkbox">
+                                </div>
+                                    <div class="message-star">
+                                        <i class="bi {% if message.is_starred %}bi-star-fill text-warning{% else %}bi-star{% endif %}"></i>
+                                    </div>
+                                    <div class="message-sender">
+                                        <div class="sender-avatar">
+                                            {% if message.from_worker.profile_image %}
+                                                <img src="{{ message.sender.profile_image.url }}" alt="{{ message.sender.username }}">
+                                            {% else %}
+                                                <div class="avatar-placeholder">{{ message.from_worker.username|first|upper }}</div>
+                                            {% endif %}
+                                        </div>
+                                        <span class="sender-name">{{ message.from_worker.username }}</span>
+                                    </div>
+                                    <div class="message-content">
+                                        <div class="message-subject">{{ message.title }}</div>
+                                        <div class="message-preview">{{ message.content|truncatechars:100 }}</div>
+                                    </div>
+                                    <div class="message-meta">
+                                        <div class="message-time">{{ message.send_datetime|timesince }} ago</div>
+                                        {% if message.has_attachment %}
+                                        <div class="message-attachment">
+                                            <i class="bi bi-paperclip"></i>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                            </div>
+                            {% empty %}
+                            <div class="empty-state">
+                                <i class="bi bi-inbox"></i>
+                                <h3>No messages yet</h3>
+                                <p>When you receive messages, they will appear here</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/pages/inbox.js' %}"></script>
+{% endblock %}

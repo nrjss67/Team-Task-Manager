@@ -1,0 +1,48 @@
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/components/sidebar.css' %}">
+{% endblock %}
+
+<div class="sidebar">
+<div class="sidebar-profile">
+    <div class="profile-info">
+        <div class="profile-name">{{ user.username }}</div>
+        <div class="profile-role">Team Member</div>
+    </div>
+</div>
+<nav class="sidebar-nav">
+    <div class="nav-section">
+        <div class="nav-section-title">MAIN MENU</div>
+        
+        <a href="{% url 'task_manager:inbox' team_name %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+            <i class="bi bi-chat-square-dots"></i>
+            <span>Inbox</span>
+            {% if unread_messages_count > 0 %}
+                <span class="nav-badge">{{ unread_messages_count }}</span>
+            {% endif %}
+        
+        <a href="{% url 'task_manager:home_page' team_name %}" class="nav-link {% if request.resolver_match.url_name == 'personal_tasks' %}active{% endif %}">
+            <i class="bi bi-person-workspace"></i>
+            <span>My Tasks</span>
+        </a>
+    </div>
+
+    <div class="nav-section">
+        <div class="nav-section-title">WORKSPACE</div>
+        
+        <a href="{% url 'task_manager:team_projects_list' team_name %}" class="nav-link">
+            <i class="bi bi-kanban"></i>
+            <span>Projects</span>
+        </a>
+    </div>
+</nav>
+<button class="sidebar-collapse-btn">
+    <i class="bi bi-chevron-left"></i>
+</button>
+</div>
+
+
+{% block js %}
+    <script src="{% static 'js/components/sidebar.js' %}"></script>
+{% endblock %}

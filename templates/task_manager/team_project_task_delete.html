@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/pages/task_delete.css' %}">
+{% endblock %}
+
+{% block title %}
+    Delete Task: {{ task.name }}
+{% endblock title %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+
+
+
+            <!-- Картка підтвердження видалення -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <h1 class="h4 mb-0 text-danger">
+                        <i class="bi bi-exclamation-triangle me-2"></i>Delete Task
+                    </h1>
+                </div>
+                
+                <div class="card-body">
+                    <p class="mb-4">
+                        Are you sure you want to delete the task "<strong>{{ task.name }}</strong>"? 
+                        This action cannot be undone.
+                    </p>
+
+                    <div class="alert alert-warning">
+                        <i class="bi bi-info-circle me-2"></i>
+                        All associated comments and attachments will also be deleted.
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{% url 'task_manager:team_project_task_detail' team_name task.project.id task.id %}" 
+                               class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash me-1"></i>Delete Task
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

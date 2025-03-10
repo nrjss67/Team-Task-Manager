@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/pages/task_deatil.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h1 class="h4 mb-0">{{ task.name }}</h1>
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'task_manager:team_project_task_update' team_name task.project.id task.id %}" 
+                               class="btn btn-outline-primary">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+                            <a href="{% url 'task_manager:team_project_task_delete' team_name task.project.id task.id %}" 
+                               class="btn btn-outline-danger">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <h5 class="mb-3">Description</h5>
+                            <div class="bg-light p-3 rounded">
+                                {{ task.description|linebreaks }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-3 text-muted">Task Details</h6>
+                                    
+                                    <div class="mb-3">
+                                        <small class="text-muted d-block">Status</small>
+                                    {% if task.is_complited %}
+                                        <span class="badge status-completed">Completed</span>
+                                    {% else %}
+                                        <span class="badge status-pending">Pending</span>
+                                    {% endif %}
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <small class="text-muted d-block">Priority</small>
+                                        <span class="badge bg-{{ task.priority|lower }}">{{ task.priority }}</span>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <small class="text-muted d-block">Assigned to</small>
+                                        <div class="d-flex align-items-center mt-1">
+                                            {% if task.assigned_to.profile_image %}
+                                                <img src="{{ task.assigned_to.profile_image.url }}" 
+                                                     class="rounded-circle me-2" 
+                                                     width="24" 
+                                                     height="24">
+                                            {% else %}
+                                                <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-2" 
+                                                     style="width: 24px; height: 24px; font-size: 12px;">
+                                                     {% for worker in task.assignees.all %}
+                                                        {{ worker.username|first|upper }}
+                                                     {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                            {{ task.assigned_to.username }}
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <small class="text-muted d-block">Due Date</small>
+                                        <i class="bi bi-calendar me-1"></i>
+                                        {{ task.deadline|date:"M d, Y" }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comments-section">
+                        <h5 class="mb-3">Comments</h5>
+                        {% for comment in task.comments.all %}
+                            <div class="comment mb-3">
+                                <div class="d-flex">
+                                    {% if comment.worker.profile_image %}
+                                        <img src="{{ comment.author.profile_image.url }}" 
+                                             class="rounded-circle me-2" 
+                                             width="32" 
+                                             height="32">
+                                    {% else %}
+                                        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-2" 
+                                             style="width: 32px; height: 32px; font-size: 14px;">
+                                            {{ comment.worker.username|first|upper }}
+                                        </div>
+                                    {% endif %}
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <strong>{{ comment.worker.username }}</strong>
+                                            <small class="text-muted">{{ comment.send_datetime|date:"M d, Y H:i" }}</small>
+                                        </div>
+                                        <div class="mt-2">
+                                            {{ comment.content|linebreaks }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <form method="post" action="" class="mt-4">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-chat-dots me-1"></i>
+                                Add Comment
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
