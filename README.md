@@ -1,5 +1,12 @@
 # Team Task Manager Project
 
+## Link to the project
+[Team Task Manager](https://team-task-manager-project.onrender.com/)
+
+## User for testing
+- Username: test
+- Password: 123TEST123
+
 ## Description
 A comprehensive team task management system built with Django. This application allows teams to organize their work through projects and tasks, with features for task assignment, progress tracking, and team collaboration.
 
