@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "crispy_bootstrap5",
     "crispy_forms",
-    "widget_tweaks"
+    "widget_tweaks",
 ]
 
 MIDDLEWARE = [
@@ -65,8 +65,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "manager.wsgi.application"
-
-
 
 
 # Password validation
