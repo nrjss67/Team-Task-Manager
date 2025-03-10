@@ -15,10 +15,3 @@ urlpatterns = [
     path("", IndexView.as_view(), name="index"),
     path("", include("task_manager.urls")),
 ]
-
-
-if settings.dev.DEBUG:
-    import debug_toolbar
-    urlpatterns += [
-        path('__debug__/', include(debug_toolbar.urls)),
-    ]
