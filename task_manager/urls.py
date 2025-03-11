@@ -5,7 +5,15 @@ from task_manager.views import (
     CreateTaskView,
     MessageCreateView,
     PersonalTaskListView,
+    PositionCreateView,
+    PositionDeleteView,
+    PositionListView,
+    PositionUpdateView,
     TaskDetailView,
+    TaskTypeCreateView,
+    TaskTypeDeleteView,
+    TaskTypeListView,
+    TaskTypeUpdateView,
     TeamProjectListView,
     TeamProjectTaskListView,
     InboxListView,
@@ -75,6 +83,47 @@ urlpatterns = [
         MessageDetailView.as_view(),
         name="message_detail",
     ),
+    path(
+        "<str:team_name>/positions/",
+        PositionListView.as_view(),
+        name="position_list",
+    ),
+    path(
+        "<str:team_name>/positions/create",
+        PositionCreateView.as_view(),
+        name="position_create",
+    ),
+    path(
+        "<str:team_name>/positions/<int:pk_position>/update",
+        PositionUpdateView.as_view(),
+        name="position_update",
+    ),
+    path(
+        "<str:team_name>/positions/<int:pk_position>/delete",
+        PositionDeleteView.as_view(),
+        name="position_delete",
+    ),
+    path(
+        "<str:team_name>/task-types/",
+        TaskTypeListView.as_view(),
+        name="task_type_list",
+    ),
+    path(
+        "<str:team_name>/task-types/create",
+        TaskTypeCreateView.as_view(),
+        name="task_type_create",
+    ),
+    path(
+        "<str:team_name>/task-types/<int:pk_task_type>/update",
+        TaskTypeUpdateView.as_view(),
+        name="task_type_update",
+    ),
+    path(
+        "<str:team_name>/task-types/<int:pk_task_type>/delete",
+        TaskTypeDeleteView.as_view(),
+        name="task_type_delete",
+    ),
+    
 ]
 
 

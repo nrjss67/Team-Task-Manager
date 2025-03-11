@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/pages/position_list.css' %}">
+{% endblock %}
+
+{% block title %}Positions{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Positions</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Position List</h3>
+                            <div class="card-tools">
+                                <a href="{% url 'task_manager:position_create' team_name %}" class="btn btn-primary">
+                                    Create Position
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for position in positions %}
+                                    <tr>
+                                        <td>{{ position.id }}</td>
+                                        <td>{{ position.name }}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="{% url 'task_manager:position_update' team_name position.id %}"
+                                                    class="btn btn-sm btn-light" title="Edit">
+                                                   <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <a href="{% url 'task_manager:position_delete' team_name position.id %}"
+                                                   class="btn btn-sm btn-light" title="Delete">
+                                                   <i class="bi bi-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="3" class="text-center">No positions found</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

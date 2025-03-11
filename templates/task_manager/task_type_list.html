@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/pages/task_type_list.css' %}">
+{% endblock %}
+
+{% block title %}Task Types{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Task Types</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-end mb-3">
+                                <a href="{% url 'task_manager:task_type_create' team_name %}" class="btn btn-primary">
+                                    Create Task Type
+                                </a>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for task_type in task_types %}
+                                        <tr>
+                                            <td>{{ task_type.id }}</td>
+                                            <td>{{ task_type.name }}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href="{% url 'task_manager:task_type_update' team_name task_type.id %}"
+                                                        class="btn btn-sm btn-light" title="Edit">
+                                                       <i class="bi bi-pencil"></i>
+                                                    </a>
+                                                    <a href="{% url 'task_manager:task_type_delete' team_name task_type.id %}"
+                                                       class="btn btn-sm btn-light" title="Delete">
+                                                       <i class="bi bi-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="3" class="text-center">No task types found</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

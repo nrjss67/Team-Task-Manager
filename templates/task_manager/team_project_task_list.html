@@ -206,9 +206,9 @@
                                 <i class="bi bi-list-task"></i>
                                 <h3>No tasks found</h3>
                                 <p>Create your first task to get started</p>
-                                <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#createTaskModal">
+                                <a href="{% url 'task_manager:team_project_task_create' team_name project.pk %}" class="btn btn-primary mt-3">
                                     <i class="bi bi-plus-lg me-2"></i>Add Task
-                                </button>
+                                </a>
                             </div>
                         </td>
                     </tr>

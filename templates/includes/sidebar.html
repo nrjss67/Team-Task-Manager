@@ -35,6 +35,14 @@
             <i class="bi bi-kanban"></i>
             <span>Projects</span>
         </a>
+        <a href="{% url 'task_manager:position_list' team_name %}" class="nav-link">
+            <i class="bi bi-microsoft-teams"></i>
+            <span>Positions</span>
+        </a>
+        <a href="{% url 'task_manager:task_type_list' team_name %}" class="nav-link">
+            <i class="bi bi-list-task"></i>
+            <span>Task Types</span>
+        </a>
     </div>
 </nav>
 <button class="sidebar-collapse-btn">
