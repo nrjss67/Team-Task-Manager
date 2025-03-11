@@ -1,7 +1,7 @@
 # Team Task Manager Project
 
 ## Link to the project
-[Team Task Manager](https://team-task-manager-project.onrender.com/)
+[Team Task Manager](https://team-task-manager-1vun.onrender.com/test-team/)
 
 ## User for testing
 - Username: test
