@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/pages/task_type_delete.css' %}">
+{% endblock %}
+
+{% block title %}Delete Task Type{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Delete Task Type</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="alert alert-warning" role="alert">
+                                <h4 class="alert-heading">Warning!</h4>
+                                <p>Are you sure you want to delete task type "{{ task_type.name }}"?</p>
+                                <hr>
+                                <p class="mb-0">This action cannot be undone.</p>
+                            </div>
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="button-group">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                    <a href="{% url 'task_manager:task_type_list' team_name %}" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %} 

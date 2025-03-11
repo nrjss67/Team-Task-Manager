@@ -15,3 +15,9 @@ urlpatterns = [
     path("", IndexView.as_view(), name="index"),
     path("", include("task_manager.urls")),
 ]
+
+
+if manager.settings.dev.DEBUG:
+    urlpatterns += [
+        path("__debug__/", include(debug_toolbar.urls)),
+    ] + static(manager.settings.dev.STATIC_URL, document_root=manager.settings.dev.STATIC_ROOT)

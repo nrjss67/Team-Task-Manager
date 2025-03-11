@@ -13,7 +13,7 @@ from task_manager.forms import (
     SignUpForm,
     TaskCreateForm,
 )
-from .models import Project, Task, MessageNew
+from .models import Position, Project, Task, MessageNew, TaskType
 
 
 class IndexView(View):
@@ -419,3 +419,81 @@ class MessageDetailView(LoginRequiredMixin, generic.DetailView, generic.edit.For
     def get_success_url(self):
         team_name = get_slugify_team_name(self.request)["team_name"]
         return reverse_lazy("task_manager:inbox", kwargs={"team_name": team_name})
+
+
+
+class PositionListView(LoginRequiredMixin, generic.ListView):
+    model = Position
+    template_name = "task_manager/position_list.html"
+    context_object_name = "positions"
+    paginate_by = 10
+    
+
+class PositionCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Position
+    template_name = "task_manager/position_create.html"
+    fields = ("name",)
+    
+    def get_success_url(self):
+        team_name = get_slugify_team_name(self.request)["team_name"]
+        return reverse_lazy("task_manager:position_list", kwargs={"team_name": team_name})
+    
+  
+class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Position
+    template_name = "task_manager/position_update.html"
+    pk_url_kwarg = "pk_position"
+    fields = ("name",)
+    
+    def get_success_url(self):
+        team_name = get_slugify_team_name(self.request)["team_name"]
+        return reverse_lazy("task_manager:position_list", kwargs={"team_name": team_name})
+    
+
+class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Position
+    template_name = "task_manager/position_delete.html"
+    pk_url_kwarg = "pk_position"
+    
+    def get_success_url(self):
+        team_name = get_slugify_team_name(self.request)["team_name"]
+        return reverse_lazy("task_manager:position_list", kwargs={"team_name": team_name})
+
+
+class TaskTypeListView(LoginRequiredMixin, generic.ListView):
+    model = TaskType
+    template_name = "task_manager/task_type_list.html"
+    context_object_name = "task_types"
+    paginate_by = 10
+    
+
+class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
+    model = TaskType
+    template_name = "task_manager/task_type_create.html"
+    fields = ("name",)
+    
+    def get_success_url(self):
+        team_name = get_slugify_team_name(self.request)["team_name"]
+        return reverse_lazy("task_manager:task_type_list", kwargs={"team_name": team_name})
+
+
+class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = TaskType
+    template_name = "task_manager/task_type_update.html"
+    pk_url_kwarg = "pk_task_type"
+    fields = ("name",)
+    
+    def get_success_url(self):
+        team_name = get_slugify_team_name(self.request)["team_name"]
+        return reverse_lazy("task_manager:task_type_list", kwargs={"team_name": team_name})
+    
+
+class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = TaskType
+    template_name = "task_manager/task_type_delete.html"
+    pk_url_kwarg = "pk_task_type"
+    
+    def get_success_url(self):
+        team_name = get_slugify_team_name(self.request)["team_name"]
+        return reverse_lazy("task_manager:task_type_list", kwargs={"team_name": team_name})
+    
